@@ -1,0 +1,502 @@
+/* ==========================================================================
+   amandata.org — rebuilt styles
+   Clean-room rebuild of the original Carrd site. All values below reproduce the
+   original design exactly (type scale, spacing, colors, breakpoints); only the
+   code underneath is new: semantic class names, organized sections, no Carrd.
+   ========================================================================== */
+
+/* ---------- reset ---------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* ---------- type scale ----------
+   The whole layout is rem-based; the root size steps down with the viewport,
+   exactly as the original. */
+html { font-size: 16pt; }
+@media (max-width: 1680px) { html { font-size: 12pt; } }
+@media (max-width: 1280px) { html { font-size: 12pt; } }
+@media (max-width: 980px)  { html { font-size: 10pt; } }
+@media (max-width: 736px)  { html { font-size: 11pt; } }
+
+:root {
+  --viewport-height: 100vh;
+  --background-height: 100vh;
+}
+
+/* ---------- page backdrop ---------- */
+body {
+  background-color: #000;
+  color: #000;
+  font-family: 'Open Sans', sans-serif;
+  line-height: 1;
+  min-width: 320px;
+  min-height: var(--viewport-height);
+  overflow-x: hidden;
+  word-wrap: break-word;
+  -webkit-text-size-adjust: none;
+}
+
+/* Fixed perspective-grid backdrop, tiled from an inline SVG. */
+body::before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: var(--background-height);
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg%20width%3D%22640%22%20height%3D%22480%22%20viewBox%3D%220%200%20640%20480%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20preserveAspectRatio%3D%22none%22%3E%20%3Cstyle%3E%20line%20%7B%20stroke%3A%20%23F2EAE6%3B%20stroke-width%3A%202.01px%3B%20vector-effect%3A%20non-scaling-stroke%3B%20%7D%20%3C%2Fstyle%3E%20%3Cline%20x1%3D%22640.08%22%20y1%3D%22242.0103%22%20x2%3D%22629.9606%22%20y2%3D%22240.0%22%20%2F%3E%20%3Cline%20x1%3D%22640.9808%22%20y1%3D%22249.2743%22%20x2%3D%22598.9646%22%20y2%3D%22240.0%22%20%2F%3E%20%3Cline%20x1%3D%22642.1139%22%20y1%3D%22258.4121%22%20x2%3D%22567.9685%22%20y2%3D%22240.0%22%20%2F%3E%20%3Cline%20x1%3D%22643.5825%22%20y1%3D%22270.2558%22%20x2%3D%22536.9724%22%20y2%3D%22240.0%22%20%2F%3E%20%3Cline%20x1%3D%22645.5617%22%20y1%3D%22286.2164%22%20x2%3D%22505.9764%22%20y2%3D%22240.0%22%20%2F%3E%20%3Cline%20x1%3D%22648.3735%22%20y1%3D%22308.8922%22%20x2%3D%22474.9803%22%20y2%3D%22240.0%22%20%2F%3E%20%3Cline%20x1%3D%22652.6836%22%20y1%3D%22343.65%22%20x2%3D%22443.9843%22%20y2%3D%22240.0%22%20%2F%3E%20%3Cline%20x1%3D%22660.124%22%20y1%3D%22403.6525%22%20x2%3D%22412.9882%22%20y2%3D%22240.0%22%20%2F%3E%20%3Cline%20x1%3D%22648.2466%22%20y1%3D%22504.4691%22%20x2%3D%22381.9921%22%20y2%3D%22240.0%22%20%2F%3E%20%3Cline%20x1%3D%22484.1233%22%20y1%3D%22504.4691%22%20x2%3D%22350.9961%22%20y2%3D%22240.0%22%20%2F%3E%20%3Cline%20x1%3D%22320.0%22%20y1%3D%22504.4691%22%20x2%3D%22320.0%22%20y2%3D%22240.0%22%20%2F%3E%20%3Cline%20x1%3D%22155.8767%22%20y1%3D%22504.4691%22%20x2%3D%22289.0039%22%20y2%3D%22240.0%22%20%2F%3E%20%3Cline%20x1%3D%22-8.2466%22%20y1%3D%22504.4691%22%20x2%3D%22258.0079%22%20y2%3D%22240.0%22%20%2F%3E%20%3Cline%20x1%3D%22-20.124%22%20y1%3D%22403.6525%22%20x2%3D%22227.0118%22%20y2%3D%22240.0%22%20%2F%3E%20%3Cline%20x1%3D%22-12.6836%22%20y1%3D%22343.65%22%20x2%3D%22196.0157%22%20y2%3D%22240.0%22%20%2F%3E%20%3Cline%20x1%3D%22-8.3735%22%20y1%3D%22308.8922%22%20x2%3D%22165.0197%22%20y2%3D%22240.0%22%20%2F%3E%20%3Cline%20x1%3D%22-5.5617%22%20y1%3D%22286.2164%22%20x2%3D%22134.0236%22%20y2%3D%22240.0%22%20%2F%3E%20%3Cline%20x1%3D%22-3.5825%22%20y1%3D%22270.2558%22%20x2%3D%22103.0276%22%20y2%3D%22240.0%22%20%2F%3E%20%3Cline%20x1%3D%22-2.1139%22%20y1%3D%22258.4121%22%20x2%3D%2272.0315%22%20y2%3D%22240.0%22%20%2F%3E%20%3Cline%20x1%3D%22-0.9808%22%20y1%3D%22249.2743%22%20x2%3D%2241.0354%22%20y2%3D%22240.0%22%20%2F%3E%20%3Cline%20x1%3D%22-0.08%22%20y1%3D%22242.0103%22%20x2%3D%2210.0394%22%20y2%3D%22240.0%22%20%2F%3E%20%3Cline%20x1%3D%22-0.6801%22%20y1%3D%22246.8498%22%20x2%3D%22640.6801%22%20y2%3D%22246.8498%22%20%2F%3E%20%3Cline%20x1%3D%22-1.6678%22%20y1%3D%22254.8144%22%20x2%3D%22641.6678%22%20y2%3D%22254.8144%22%20%2F%3E%20%3Cline%20x1%3D%22-2.9156%22%20y1%3D%22264.8773%22%20x2%3D%22642.9156%22%20y2%3D%22264.8773%22%20%2F%3E%20%3Cline%20x1%3D%22-4.542%22%20y1%3D%22277.9936%22%20x2%3D%22644.542%22%20y2%3D%22277.9936%22%20%2F%3E%20%3Cline%20x1%3D%22-6.7503%22%20y1%3D%22295.8015%22%20x2%3D%22646.7503%22%20y2%3D%22295.8015%22%20%2F%3E%20%3Cline%20x1%3D%22-9.9204%22%20y1%3D%22321.3667%22%20x2%3D%22649.9204%22%20y2%3D%22321.3667%22%20%2F%3E%20%3Cline%20x1%3D%22-14.856%22%20y1%3D%22361.169%22%20x2%3D%22654.856%22%20y2%3D%22361.169%22%20%2F%3E%20%3Cline%20x1%3D%22-23.6008%22%20y1%3D%22431.691%22%20x2%3D%22663.6008%22%20y2%3D%22431.691%22%20%2F%3E%20%3Cline%20x1%3D%220.0%22%20y1%3D%22240.0%22%20x2%3D%22640.0%22%20y2%3D%22240.0%22%20%2F%3E%3C%2Fsvg%3E");
+  background-size: 100% 150%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* ---------- page frame ---------- */
+.page {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--viewport-height);
+  overflow: hidden;
+}
+
+.page-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.page-inner {
+  --pad-h: 6rem;
+  --pad-v: 10rem;
+  --spacing: 2.375rem;
+  --gutters: calc(var(--pad-h) * 2);
+  --alignment: center;
+  --flex-alignment: center;
+  --margin-left: auto;
+  --margin-right: auto;
+  width: 64rem;
+  max-width: 100%;
+  padding: var(--pad-v) var(--pad-h);
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- cards ----------
+   Every view is a white card. Cards bleed horizontally to the edges of the
+   content column; the header card also bleeds upward, the footer card downward,
+   so the page reads as one continuous white column. */
+.card {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: #fff;
+}
+
+.card--bleed,
+.card--bleed-top,
+.card--bleed-bottom {
+  margin-left: calc(var(--pad-h) * -1);
+  width: calc(100% + (var(--pad-h) * 2) + 0.4725px);
+  max-width: calc(100% + (var(--pad-h) * 2) + 0.4725px);
+}
+.card--bleed-top    { margin-top: calc(var(--pad-v) * -1); }
+.card--bleed-bottom { margin-bottom: calc(var(--pad-v) * -1); }
+
+.card-body {
+  width: 100%;
+  padding: var(--pad-v) var(--pad-h);
+  position: relative;
+}
+
+/* Vertical rhythm inside a card: every direct child is separated by
+   --spacing; first/last children sit flush. */
+.card-body > * { margin-top: var(--spacing); margin-bottom: var(--spacing); }
+.card-body > :first-child { margin-top: 0; }
+.card-body > :last-child { margin-bottom: 0; }
+
+/* ---------- two-column rows ---------- */
+.cols {
+  display: flex;
+  align-items: center;
+}
+.col {
+  flex-shrink: 0;
+  width: calc(50% + (var(--gutters) / 2));
+  padding-left: var(--gutters);
+  margin-left: calc(var(--gutters) * -1);
+  --alignment: center;
+  --flex-alignment: center;
+  text-align: var(--alignment);
+}
+.cols .col:first-child {
+  --alignment: left;
+  --flex-alignment: flex-start;
+  --margin-left: 0;
+  --margin-right: auto;
+}
+.col + .col { margin-left: 0; }
+.col > * { margin-top: var(--spacing); margin-bottom: var(--spacing); }
+.col > :first-child { margin-top: 0; }
+.col > :last-child { margin-bottom: 0; }
+
+/* The original page carried its site-verification meta as a zero-height embed
+   at the top of the header's first column, which contributed one --spacing of
+   top margin via margin collapsing. The meta now lives in <head>; this keeps
+   the geometry identical. */
+.masthead .col:first-child { padding-top: var(--spacing); }
+
+/* ---------- photos ----------
+   Full-bleed image bands. In columns they pull left by half the gutters and,
+   when first, upward by the card padding; in single-column cards they span the
+   full card width. Heights step down on small screens. */
+.photo {
+  display: block;
+  line-height: 0;
+  position: relative;
+  max-width: 100%;
+  height: 12.875rem;
+}
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+.cols .photo {
+  width: calc(100% + var(--gutters) + 0.4725px);
+  max-width: none;
+  margin-left: calc((var(--gutters) / 2) * -1);
+}
+.cols .col:first-child .photo:first-child { margin-top: calc(var(--pad-v) * -1); }
+.cols .col:last-child .photo:first-child  { margin-top: calc(var(--pad-v) * -1); }
+.card-body.stack .photo:first-child {
+  width: calc(100% + (var(--pad-h) * 2) + 0.4725px);
+  max-width: none;
+  margin-left: calc(var(--pad-h) * -1);
+  margin-top: calc(var(--pad-v) * -1);
+}
+
+/* ---------- typography ---------- */
+/* Rich-text paragraphs (verbatim from the original markup). */
+.p { display: block; position: relative; }
+/* Brand line: "Amanda Ta / Psychology & Research @ SDSU" */
+.brand {
+  text-transform: uppercase;
+  color: #000;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1em;
+  line-height: 1.25;
+  letter-spacing: 0.225rem;
+  width: calc(100% + 0.225rem);
+}
+.brand a { color: #f07701; text-decoration: underline; }
+.brand .sdsu { color: #f00; }
+
+/* Quick nav: Research / About / Contact */
+.quicknav {
+  color: #000;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.75em;
+  line-height: 2.125;
+  letter-spacing: 0.025rem;
+  width: calc(100% + 0.025rem);
+  padding-left: 1.25rem;
+  text-indent: 1.25rem;
+}
+.quicknav a { color: inherit; text-decoration: underline; }
+
+/* Section headings (Geo) */
+.sec-title {
+  color: #000;
+  font-family: 'Geo', sans-serif;
+  font-weight: 400;
+  font-size: 1.875em;
+  line-height: 1.25;
+  max-width: 30rem;
+  margin-left: var(--margin-left);
+  margin-right: var(--margin-right);
+  text-align: var(--alignment);
+}
+.sec-title--lg { font-size: 2.5em; }
+.sec-title a { color: inherit; text-decoration: underline; }
+.sec-title > .p:nth-child(n+2) { margin-top: 2rem; }
+
+/* Body copy */
+.body-text {
+  color: #000;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.75em;
+  line-height: 2.125;
+  letter-spacing: 0.025rem;
+  width: calc(100% + 0.025rem);
+  max-width: 99.5rem;
+  padding-left: 1.25rem;
+  text-indent: 1.25rem;
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+}
+.cols .body-text { margin-left: 0; }
+.body-text > .p:nth-child(n+2) { margin-top: 1.875rem; }
+.body-text a { color: inherit; text-decoration: underline; }
+.body-text strong { font-weight: 800; }
+
+/* Fine print (footer) */
+.fineprint {
+  color: #000;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  font-size: 0.75em;
+  line-height: 2.125;
+  letter-spacing: 0.025rem;
+  text-align: center;
+}
+.fineprint > .p:nth-child(n+2) { margin-top: 1.875rem; }
+
+/* CV download link */
+.cvlink {
+  display: flex;
+  justify-content: var(--flex-alignment);
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.75em;
+  line-height: 1.5;
+  letter-spacing: 0.025rem;
+}
+.cvlink a { color: inherit; }
+.cvlink a:hover { text-decoration: none; }
+
+/* ---------- social icons ---------- */
+.social {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  font-size: 1em;
+  padding: 0;
+}
+.social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2em;
+  height: 2em;
+  border-radius: 1.125rem;
+  background-color: #000;
+  transition: transform 0.25s ease, background-color 0.25s ease;
+}
+.social a svg {
+  width: 60%;
+  height: 60%;
+  fill: #fff;
+  transition: transform 0.25s ease, fill 0.25s ease;
+}
+.social a:hover { background-color: #fff; transform: scale(1.095); }
+.social a:hover svg { transform: scale(1.095); }
+.social a:hover svg * { fill: #000; }
+.social-label { display: none; }
+
+/* ---------- pill buttons ---------- */
+.btn-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+.btn-row--center { justify-content: center; }
+.cols .btn-row { justify-content: var(--flex-alignment); }
+
+.pill-btn {
+  display: inline-block;
+  font-family: 'Fira Mono', monospace;
+  font-weight: 700;
+  font-size: 0.75em;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  height: 3.375rem;
+  line-height: 3.375rem;
+  padding: 0 1.6875rem 0 calc(1.6875rem + 0.05rem);
+  border-radius: 3rem;
+  background-color: #000;
+  color: #fff;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 0.25s ease, color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+}
+.pill-btn:hover { background-color: #fff; transform: scale(1.0425); }
+.pill-btn--lg {
+  font-size: 1em;
+  text-transform: none;
+  height: 3.5rem;
+  line-height: 3.5rem;
+  padding: 0 1.75rem 0 calc(1.75rem + 0.05rem);
+}
+
+/* ---------- views (hash-routed sections) ---------- */
+.view[hidden] { display: none; }
+
+/* ---------- contact form ---------- */
+.contact-form {
+  width: 29rem;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+.contact-form .field { margin: 1rem 0 0 0; }
+.contact-form .field:first-child { margin-top: 0; }
+.contact-form label {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-weight: 500;
+  font-size: 1em;
+  line-height: 1.5;
+  letter-spacing: 0.025rem;
+  text-transform: uppercase;
+  color: #000;
+  margin: 0.25rem 0 0.75rem 0;
+}
+.contact-form .field:first-child label { margin-top: 0; }
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form input[type="tel"],
+.contact-form textarea {
+  display: block;
+  width: 100%;
+  border: solid 1px #292424;
+  border-radius: 3rem;
+  height: 3.5rem;
+  padding: 0 1.225rem 0 calc(1.225rem + 0.025rem);
+  line-height: calc(3.5rem - 2px);
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  font-size: 1em;
+  letter-spacing: 0.025rem;
+  color: #000;
+  background-color: transparent;
+}
+.contact-form textarea {
+  height: 10rem;
+  line-height: 2;
+  padding: 0.875rem 1.225rem 1.225rem;
+  resize: vertical;
+}
+.contact-form input:focus,
+.contact-form textarea:focus { outline: 2px solid #000; outline-offset: 2px; }
+.contact-form input::placeholder,
+.contact-form textarea::placeholder { color: #000; opacity: 0.55; }
+.form-actions { margin: 1.375rem 0 0 0; text-align: center; }
+.form-actions button {
+  display: inline-block;
+  width: auto;
+  height: 3.5rem;
+  line-height: calc(3.5rem - 4px);
+  padding: 0 1.75rem 0 calc(1.75rem + 0.025rem);
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  font-size: 1em;
+  letter-spacing: 0.025rem;
+  border-radius: 3rem;
+  border: solid 2px #000;
+  background-color: transparent;
+  color: #000;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.form-note {
+  text-align: center;
+  font-size: 0.875em;
+  margin-top: 1rem;
+  min-height: 1.5em;
+}
+
+/* ---------- entrance animation ----------
+   Icons and section headings fade/slide in on first paint, as the original. */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(0.75rem); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.anim-in { animation: fade-up 0.6s ease both; }
+.social.anim-in li:nth-child(2) { animation-delay: 0.125s; }
+.social.anim-in li:nth-child(3) { animation-delay: 0.25s; }
+.social.anim-in li:nth-child(4) { animation-delay: 0.375s; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 736px) {
+  .page-inner { --pad-h: 2rem; --pad-v: 4rem; --gutters: calc(var(--pad-v) * 2); }
+  .cols { flex-direction: column; }
+  .col {
+    width: 100%;
+    min-height: 100%;
+    padding-left: 0;
+    margin-left: 0;
+    padding-top: calc(var(--gutters) * 0.5);
+    padding-bottom: calc(var(--gutters) * 0.5);
+    --alignment: center;
+    --flex-alignment: center;
+  }
+  .col:first-child { padding-top: 0; }
+  .col:last-child { padding-bottom: 0; }
+  .cols .photo {
+    margin-left: calc(var(--pad-h) * -1);
+    width: calc(100% + (var(--pad-h) * 2) + 0.4725px);
+  }
+  .photo { height: 3.75rem; }
+  .brand { letter-spacing: 0.196875rem; width: calc(100% + 0.196875rem); }
+  .quicknav {
+    letter-spacing: 0.021875rem;
+    width: calc(100% + 0.021875rem);
+    padding-left: 0.9375rem;
+    text-indent: 0.9375rem;
+  }
+  .sec-title { letter-spacing: 0; width: 100%; max-width: 100%; font-size: 2.5em; line-height: 1.375; }
+  .sec-title--lg { font-size: 2.5em; }
+  .body-text {
+    letter-spacing: 0.021875rem;
+    width: calc(100% + 0.021875rem);
+    padding-left: 0.9375rem;
+    text-indent: 0.9375rem;
+  }
+  .fineprint { letter-spacing: 0.021875rem; width: calc(100% + 0.021875rem); }
+  .social { font-size: 1.125em; gap: 1rem; }
+  .pill-btn { font-size: 0.625em; }
+  .pill-btn--lg { font-size: 1em; }
+  .cvlink { letter-spacing: 0.021875rem; font-size: 0.75em; }
+  .btn-row { margin-top: 2.25rem; margin-bottom: 2.25rem; }
+  .contact-form { margin-top: 2.25rem; margin-bottom: 2.25rem; }
+  .contact-form label { letter-spacing: 0; }
+}
+@media (max-width: 480px) {
+  .page-inner { --spacing: 2.078125rem; }
+  .photo { height: 3rem; }
+  .form-actions button { width: 100%; max-width: 32rem; }
+}
+@media (max-width: 360px) {
+  .page-inner { --pad-h: 1.5rem; --pad-v: 3rem; --spacing: 1.78125rem; }
+  .photo { height: 2.625rem; }
+  .social { gap: 0.75rem; }
+  .btn-row { gap: 0.5625rem; }
+}
