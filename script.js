@@ -121,10 +121,15 @@
   if (localStorage.getItem('amandata-theme') === 'dark') {
     document.body.classList.add('dark-mode');
   }
+  function label() {
+    btn.textContent = document.body.classList.contains('dark-mode') ? 'Light Mode' : 'Dark Mode';
+  }
+  label();
   btn.addEventListener('click', function () {
     document.body.classList.toggle('dark-mode');
     localStorage.setItem('amandata-theme',
       document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    label();
   });
 })();
 
