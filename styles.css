@@ -222,6 +222,14 @@ body::before {
 }
 .quicknav a { color: inherit; text-decoration: underline; }
 
+/* light mode: black bar behind nav, inverted colors */
+body:not(.dark-mode) .quicknav{
+  background: #000; color: #fff;
+  padding: 0.5rem 1.25rem; text-indent: 0;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 /* Section headings (Geo) */
 .sec-title {
   color: #000;
