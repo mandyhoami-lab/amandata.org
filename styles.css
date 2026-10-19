@@ -525,3 +525,11 @@ body.dark-mode .brand{ color: #e8e8e8; }
 body.dark-mode .brand .sdsu{ color: #f00; }
 body.dark-mode .body-text{ color: #e8e8e8; }
 body.dark-mode .sec-title{ color: #e8e8e8; }
+
+/* ---------- scroll progress bar (red to black) ---------- */
+#scroll-progress{
+  position: fixed; top: 0; left: 0;
+  height: 3px; width: 0%;
+  background: linear-gradient(90deg, #f00, #000);
+  z-index: 101; pointer-events: none;
+}

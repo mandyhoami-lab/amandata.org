@@ -127,3 +127,18 @@
       document.body.classList.contains('dark-mode') ? 'dark' : 'light');
   });
 })();
+
+/* ---------- scroll progress bar ---------- */
+(function () {
+  var bar = document.createElement('div');
+  bar.id = 'scroll-progress';
+  document.body.appendChild(bar);
+  function update() {
+    var h = document.documentElement;
+    var max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
