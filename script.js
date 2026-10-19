@@ -65,32 +65,65 @@
   }
 
   /* ---------- contact form ----------
-     Static-site friendly: validates the fields, then opens the visitor's
-     email app with a prefilled message to ata3958@sdsu.edu (no backend). */
+     Posts to the send-contact edge function on Supabase, which stores the
+     message and emails it to ata3958@sdsu.edu via Resend. */
+  var CONTACT_ENDPOINT = 'https://latblgczhvpmvhuewczt.supabase.co/functions/v1/send-contact';
+  var CONTACT_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxhdGJsZ2N6aHZwbXZodWV3Y3p0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3NDAzNjYsImV4cCI6MjEwNjMxNjM2Nn0.0kEZgPkqQWmeW6fJ7k5uV2afDy-PsHrj_7WFpEOlELY';
   var form = document.getElementById('contact-form');
   if (form) {
+    form.removeAttribute('action');
     var note = form.querySelector('.form-note');
+    var submitBtn = form.querySelector('button[type="submit"]');
 
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
       if (!form.reportValidity()) return;
 
-      var name = document.getElementById('cf-name').value.trim();
-      var company = document.getElementById('cf-company').value.trim();
-      var email = document.getElementById('cf-email').value.trim();
-      var phone = document.getElementById('cf-phone').value.trim();
-      var message = document.getElementById('cf-message').value.trim();
+      var payload = {
+        name: document.getElementById('cf-name').value.trim(),
+        company: document.getElementById('cf-company').value.trim(),
+        email: document.getElementById('cf-email').value.trim(),
+        phone: document.getElementById('cf-phone').value.trim(),
+        message: document.getElementById('cf-message').value.trim()
+      };
 
-      var subject = 'Website contact from ' + name + (company ? ' (' + company + ')' : '');
-      var lines = [message, '', '— ' + name];
-      if (company) lines.push(company);
-      lines.push('Email: ' + email);
-      if (phone) lines.push('Phone: ' + phone);
+      if (note) note.textContent = 'Sending…';
+      if (submitBtn) submitBtn.disabled = true;
 
-      if (note) note.textContent = 'Opening your email app…';
-      location.href = 'mailto:ata3958@sdsu.edu'
-        + '?subject=' + encodeURIComponent(subject)
-        + '&body=' + encodeURIComponent(lines.join('\n'));
+      fetch(CONTACT_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': CONTACT_ANON_KEY,
+          'Authorization': 'Bearer ' + CONTACT_ANON_KEY
+        },
+        body: JSON.stringify(payload)
+      }).then(function (res) {
+        if (!res.ok) throw new Error('bad status ' + res.status);
+        return res.json();
+      }).then(function () {
+        if (note) note.textContent = 'Thanks — your message is on its way.';
+        form.reset();
+      }).catch(function () {
+        if (note) note.textContent = 'Something went wrong sending that. Please try again in a bit.';
+      }).then(function () {
+        if (submitBtn) submitBtn.disabled = false;
+      });
     });
   }
+})();
+
+/* ---------- dark mode toggle ---------- */
+(function () {
+  var btn = document.getElementById('theme-toggle');
+  if (!btn) return;
+  // restore saved preference
+  if (localStorage.getItem('amandata-theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+  }
+  btn.addEventListener('click', function () {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('amandata-theme',
+      document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+  });
 })();
